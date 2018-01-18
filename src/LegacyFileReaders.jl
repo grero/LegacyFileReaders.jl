@@ -35,20 +35,15 @@ function FileIO.load(ff::File{format"NPTD"})
     datatype = Int16
     header = open(ff.filename) do fid 
         header_size = read(fid, UInt32)
-        @show header_size
         num_channels = read(fid, UInt16)
-        @show num_channels
         transpose = read(fid, UInt8)
-        @show transpose
         sampling_rate = read(fid, UInt32)
-        @show sampling_rate
         seekend(fid)
         fsize = position(fid)
         npoints = div(fsize - header_size,sizeof(datatype))
         npoints = div(npoints, num_channels)
         DataHeader(header_size, sampling_rate, num_channels, npoints,transpose == one(UInt8)) 
     end
-    @show header
     DataPacket(header, Mmap.mmap(ff.filename, Array{datatype, 2}, (Int(header.nchannels), Int(header.npoints)), Int(header.headersize)))
 end
 end#module
