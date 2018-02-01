@@ -33,7 +33,7 @@ datatypes = Dict(1 => UInt8,
 
 function FileIO.load(ff::File{format"NPTD"})
     datatype = Int16
-    header = open(ff.filename) do fid 
+    header = open(ff.filename, "r") do fid
         header_size = read(fid, UInt32)
         num_channels = read(fid, UInt16)
         transpose = read(fid, UInt8)
