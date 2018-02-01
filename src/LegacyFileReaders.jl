@@ -45,10 +45,10 @@ function FileIO.load(ff::File{format"NPTD"})
         DataHeader(header_size, sampling_rate, num_channels, npoints,transpose == one(UInt8)) 
     end
     fid = open(ff.filename, "r")
-    if header.transpse
-        data = DataPacket(header, Mmap.mmap(fid, Array{datatype, 2}, (Int(header.nchannels), ), Int(header.headersize)))
-    else
+    if header.transpose
         data = DataPacket(header, Mmap.mmap(fid, Array{datatype, 2}, (Int(header.npoints), Int(header.nchannels)), Int(header.headersize)))
+    else
+        data = DataPacket(header, Mmap.mmap(fid, Array{datatype, 2}, (Int(header.nchannels), Int(header.npoints)), Int(header.headersize)))
     end
     data
 end
