@@ -35,8 +35,13 @@ function FileIO.load(ff::File{format"NPTD"})
     datatype = Int16
     header = open(ff.filename, "r") do fid
         header_size = read(fid, UInt32)
-        num_channels = read(fid, UInt16)
-        transpose = read(fid, UInt8)
+        if header_size == 73
+            num_channels = UInt16(read(fid, UInt8))
+            transpose = zero(UInt8)
+        else
+            transpose = read(fid, UInt8)
+            num_channels = read(fid, UInt16)
+        end
         sampling_rate = read(fid, UInt32)
         seekend(fid)
         fsize = position(fid)
