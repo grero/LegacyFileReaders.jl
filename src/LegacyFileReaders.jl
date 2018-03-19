@@ -42,8 +42,8 @@ function FileIO.load(ff::File{format"NPTD"})
             num_channels = read(fid, UInt16)
             transpose = zero(UInt8)
         else
-            transpose = read(fid, UInt8)
             num_channels = read(fid, UInt16)
+            transpose = read(fid, UInt8)
         end
         sampling_rate = read(fid, UInt32)
         seekend(fid)
