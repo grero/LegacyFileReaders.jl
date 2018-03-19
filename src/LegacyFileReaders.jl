@@ -38,6 +38,9 @@ function FileIO.load(ff::File{format"NPTD"})
         if header_size == 73
             num_channels = UInt16(read(fid, UInt8))
             transpose = zero(UInt8)
+        elseif header_size == 74
+            num_channels = read(fid, UInt16)
+            transpose = zero(UInt8)
         else
             transpose = read(fid, UInt8)
             num_channels = read(fid, UInt16)
